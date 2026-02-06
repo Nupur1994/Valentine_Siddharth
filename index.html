@@ -3,10 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine's Day</title>
+    <title>React App</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Happy Valentine's Day!</h1>
-    <img src="https://tenor.com/view/heart-made-of-red-roses-love-beautiful-valentine's-day-heartbeat-ekg-heart-beating-red-roses-love-red-flowers-gif-6234991390973076201" alt="Valentine's Heart">
+    <div id="root"></div>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        function App() {
+            const [page, setPage] = React.useState('question');
+            const [noButtonPos, setNoButtonPos] = React.useState({ x: 150, y: 0 });
+            const noButtonRef = React.useRef(null);
+
+            const moveNoButton = () => {
+                // Generate random position ensuring no overlap with Yes button
+                let randomX, randomY;
+                do {
+                    randomX = Math.floor(Math.random() * 400) - 200;
+                    randomY = Math.floor(Math.random() * 200) - 100;
+                } while (Math.abs(randomX) < 120 && Math.abs(randomY) < 40);
+               
+                setNoButtonPos({ x: randomX, y: randomY });
+            };
+
+            const handleMouseMove = (e) => {
+                if (noButtonRef.current) {
+                    const rect = noButtonRef.current.getBoundingClientRect();
+                    const buttonCenterX = rect.left + rect.width / 2;
+                    const buttonCenterY = rect.top + rect.height / 2;
+                   
+                    const distance = Math.sqrt(
+                        Math.pow(e.clientX - buttonCenterX, 2) +
+                        Math.pow(e.clientY - buttonCenterY, 2)
+                    );
+                   
+                    // Move button when cursor gets within 100px
+                    if (distance < 100) {
+                        moveNoButton();
+                    }
+                }
+            };
+
+            const handleYesClick = () => {
+                setPage('success');
+            };
+
+            if (page === 'success') {
+                return (
+                    <div style={{
+                        minHeight: '100vh',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: 'red',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                        padding: '20px'
+                    }}>
+                        <div style={{
+                            background: 'white',
+                            borderRadius: '20px',
+                            padding: '60px 40px',
+                            boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+                            textAlign: 'center',
+                            maxWidth: '600px',
+                            animation: 'fadeIn 0.5s ease-in'
+                        }}>
+                            <img
+                                src="gif_image.gif"
+                                alt="Celebration"
+                                style={{
+                                    maxWidth: '300px',
+                                    width: '100%',
+                                    borderRadius: '10px',
+                                    marginBottom: '20px'
+                                }}
+                            />
+                            <h1 style={{
+                                fontSize: '2.5rem',
+                                margin: '0 0 20px 0',
+                                background: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                backgroundClip: 'text'
+                            }}>
+                                🎉 I knew it! I am just testing 😊  🎉
+                            </h1>
+                            <p style={{
+                                fontSize: '1.2rem',
+                                color: '#666',
+                                marginTop: '20px'
+                            }}>
+                                Hehe 😊 There was no escape! 🤭
+                            </p>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div style={{
+                    minHeight: '100vh',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    padding: '20px'
+                }}>
+                    <div style={{
+                        background: 'white',
+                        borderRadius: '20px',
+                        padding: '60px 40px',
+                        boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+                        textAlign: 'center',
+                        maxWidth: '600px'
+                    }}>
+                        <h1 style={{
+                            fontSize: '2.5rem',
+                            margin: '0 0 30px 0',
+                            color: '#333'
+                        }}>
+                            Siddharth , will you be my velentine lifetime?
+                        </h1>
+                        <div
+                            style={{
+                                display: 'flex',
+                                gap: '20px',
+                                justifyContent: 'center',
+                                position: 'relative',
+                                height: '300px',
+                                alignItems: 'center',
+                                width: '100%',
+                                maxWidth: '600px'
+                            }}
+                            onMouseMove={handleMouseMove}>
+                            <button
+                                style={{
+                                    padding: '15px 40px',
+                                    fontSize: '1.2rem',
+                                    background: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '30px',
+                                    cursor: 'pointer',
+                                    fontWeight: 'bold',
+                                    transition: 'transform 0.2s',
+                                    boxShadow: '0 4px 15px rgba(17, 153, 142, 0.4)',
+                                    zIndex: 1
+                                }}
+                                onMouseOver={(e) => e.target.style.transform = 'scale(1.1)'}
+                                onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
+                                onClick={handleYesClick}>
+                                Yes
+                            </button>
+                            <button
+                                ref={noButtonRef}
+                                style={{
+                                    padding: '15px 40px',
+                                    fontSize: '1.2rem',
+                                    background: 'linear-gradient(135deg, #eb3349 0%, #f45c43 100%)',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '30px',
+                                    cursor: 'pointer',
+                                    fontWeight: 'bold',
+                                    transition: 'all 0.3s ease',
+                                    boxShadow: '0 4px 15px rgba(235, 51, 73, 0.4)',
+                                    position: 'absolute',
+                                    transform: `translate(${noButtonPos.x}px, ${noButtonPos.y}px)`,
+                                    pointerEvents: 'none'
+                                }}
+                                onClick={(e) => e.preventDefault()}>
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
